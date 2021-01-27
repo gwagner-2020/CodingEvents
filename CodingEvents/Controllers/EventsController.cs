@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CodingEvents.Models;
 
 namespace CodingEvents.Controllers
 {
     public class EventsController : Controller
     {
-        private static Dictionary<string, string> events = new Dictionary<string, string>();
+        private static List<Event> events = new List<Event>();
         // GET: /<controller>/
         [HttpGet]
         public IActionResult Index()
@@ -31,7 +32,7 @@ namespace CodingEvents.Controllers
         [Route("/Events/Add")]
         public IActionResult NewEvent(string name, string description)
         {
-            events.Add(name, description);
+            events.Add(new Event(name, description));
 
             return Redirect("/Events");
         }
