@@ -40,9 +40,11 @@ namespace CodingEvents.Controllers
             return Redirect("/Events");
         }
 
+        [HttpGet]
         public IActionResult Delete()
         {
             ViewBag.events = EventData.GetAll();
+
             return View();
         }
 

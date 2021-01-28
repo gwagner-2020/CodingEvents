@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ namespace CodingEvents.Models
     public class Event
     {
         public string Name { get; set; }
+        
+        [FromForm(Name="desc")]
         public string Description { get; set; }
 
         public int Id { get; }
@@ -34,7 +37,8 @@ namespace CodingEvents.Models
 
         public override bool Equals(object obj)
         {
-            return obj is Event @event && Id == @event.Id;
+            return obj is Event @event && 
+                Id == @event.Id;
         }
 
         public override int GetHashCode()
