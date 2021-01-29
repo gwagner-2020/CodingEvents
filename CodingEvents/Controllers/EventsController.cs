@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CodingEvents.Models;
 using CodingEvents.Data;
+using CodingEvents.ViewModels;
 
 namespace CodingEvents.Controllers
 {
@@ -15,29 +16,43 @@ namespace CodingEvents.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            //Events.Add("Strange Loop");
-            //Events.Add("Grace Hopper");
-            //Events.Add("Code with Pride");
-            ViewBag.events = EventData.GetAll();
+            List<Event> events = new List<Event>(EventData.GetAll());
 
-            return View();
+            return View(events);
         }
 
         [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            // Create a blank AddEventViewModel to associate with the form in Add.cshtml
+            AddEventViewModel addEventViewModel = new AddEventViewModel();
+            return View(addEventViewModel);
         }
 
         [HttpPost]
-        [Route("/Events/Add")]
+        //[Route("/Events/Add")]
         //public IActionResult NewEvent(string name, string desciption) 
-        public IActionResult NewEvent(Event newEvent)
+        public IActionResult Add(AddEventViewModel viewModel)
         {
-            //EventData.Add(new Event(name, description));
-            EventData.Add(newEvent);
+            //Imagine doing lots of data validation on the viewModel first
+            if (ModelState.IsValid)
+            {
+                Event newEvent = new Event
+                {
+                    Name = viewModel.Name,
+                    Description = viewModel.Description,
+                    ContactEmail = viewModel.ContactEmail
+                };
 
-            return Redirect("/Events");
+                //EventData.Add(new Event(name, description));
+                EventData.Add(newEvent);
+
+                return Redirect("/Events");
+            }
+
+            // viewModel is NOT valid!
+            return View(viewModel);
+            
         }
 
         [HttpGet]

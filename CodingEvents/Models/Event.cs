@@ -12,6 +12,7 @@ namespace CodingEvents.Models
         
         [FromForm(Name="desc")]
         public string Description { get; set; }
+        public string ContactEmail { get; set; }
 
         public int Id { get; }
         private static int nextId = 1;
@@ -22,10 +23,11 @@ namespace CodingEvents.Models
             nextId++;
         }
         
-        public Event(string name, string description): this()
+        public Event(string name, string description, string contactEmail): this()
         {
             this.Name = name;
             this.Description = description;
+            this.ContactEmail = contactEmail;
             //this.Id = nextId;
             //nextId++;
         }
