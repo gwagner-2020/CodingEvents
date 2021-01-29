@@ -19,6 +19,17 @@ namespace CodingEvents.ViewModels
         [EmailAddress]
         public string ContactEmail { get; set; }
 
+        [Required (ErrorMessage = "Location is required.")]
+        public string Location { get; set; }
+
+        [Range (0, 100000, ErrorMessage = "Cannot exceed 100,000.")]
+        public int NumAttendees { get; set; }
+
+        [Compare("IsTrue")]
+        public bool Registration { get; set; }
+
+        public bool IsTrue { get { return true; } }
+
         //This constructor is automatically part of this class
         //public AddEventViewModel() {}
     }
