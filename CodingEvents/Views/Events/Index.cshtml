@@ -19,17 +19,19 @@ else
             <th>Name</th>
             <th>Description</th>
             <th>Contact Email</th>
+            <th>Type</th>
         </tr>
         
         @*var meeting ---> Event meeting*@
         @foreach (var meeting in Model)
          {
-            <tr>
-                <td>@meeting.Id</td>
-                <td>@meeting.Name</td>
-                <td>@meeting.Description</td>
-                <td>@meeting.ContactEmail</td>
-            </tr>
+        <tr>
+            <td>@meeting.Id</td>
+            <td>@meeting.Name</td>
+            <td>@meeting.Description</td>
+            <td>@meeting.ContactEmail</td>
+            <td>@meeting.Type</td>
+        </tr>
          }
      </table>
 @*}*@       

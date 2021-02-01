@@ -13,6 +13,7 @@ namespace CodingEvents.Models
         [FromForm(Name="desc")]
         public string Description { get; set; }
         public string ContactEmail { get; set; }
+        public EventType Type { get; set; }
 
         public int Id { get; }
         private static int nextId = 1;

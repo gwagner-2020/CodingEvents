@@ -41,7 +41,8 @@ namespace CodingEvents.Controllers
                 {
                     Name = viewModel.Name,
                     Description = viewModel.Description,
-                    ContactEmail = viewModel.ContactEmail
+                    ContactEmail = viewModel.ContactEmail,
+                    Type = viewModel.Type
                 };
 
                 //EventData.Add(new Event(name, description));
