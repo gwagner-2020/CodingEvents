@@ -12,6 +12,8 @@
 <h1>Edit Event: @Model.Name</h1>
 
 <form method="post" asp-controller="Events" asp-action="Edit">
+    <input type="hidden" asp-for="Id"/>
+
     <div class="form-group">
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />

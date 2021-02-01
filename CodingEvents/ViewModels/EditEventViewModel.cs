@@ -9,7 +9,7 @@ namespace CodingEvents.ViewModels
 {
     public class EditEventViewModel
     {
-        public int Id { get; }
+        public int Id { get; set; }
         
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be between 3 and 50 characters.")]
@@ -21,6 +21,8 @@ namespace CodingEvents.ViewModels
 
         [EmailAddress]
         public string ContactEmail { get; set; }
+
+        public EditEventViewModel() { }
 
         public EditEventViewModel(Event evt)
         {
