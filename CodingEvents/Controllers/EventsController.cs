@@ -56,6 +56,43 @@ namespace CodingEvents.Controllers
             
         }
 
+        // Eg. GET /Events/Edit/2
+        // GET: /Events/Edit/{eventId}
+        [HttpGet]
+        [Route("/Events/Edit/{eventId}")]
+        public IActionResult Edit(int eventId)
+        {
+            //Create an editEventViewModel with properties assigned from Event associated with eventId
+            Event eventToEdit = EventData.GetById(eventId);
+
+            //Use eventToEdit to populate values of editEventViewModel
+            EditEventViewModel editEventViewModel = new EditEventViewModel(eventToEdit);
+            return View(editEventViewModel);
+        }
+
+        //POST: /Events/Edit
+        [HttpPost]
+        public IActionResult Edit(EditEventViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                //Get the Event object from the Event Data
+                //Where does the eventId come from?
+
+                Event eventToEdit = EventData.GetById(viewModel.Id);
+
+                // Modify properties in eventToEdit, using new values in viewModel
+
+                eventToEdit.Name = viewModel.Name;
+                eventToEdit.Description = viewModel.Description;
+                eventToEdit.ContactEmail = viewModel.ContactEmail;
+
+                return Redirect("/Events");
+            }
+
+            return View(viewModel);
+        }
+
         [HttpGet]
         public IActionResult Delete()
         {
