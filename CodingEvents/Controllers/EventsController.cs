@@ -1,78 +1,55 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CodingEvents.Data;
+using CodingEvents.Models;
+using CodingEvents.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CodingEvents.Models;
-using CodingEvents.Data;
-using CodingEvents.ViewModels;
 
 namespace CodingEvents.Controllers
 {
     public class EventsController : Controller
     {
-        //private static List<Event> events = new List<Event>();
+        private static Dictionary<string, string> events = new Dictionary<string, string>();
         // GET: /<controller>/
         [HttpGet]
         public IActionResult Index()
         {
-            List<Event> events = new List<Event>(EventData.GetAll());
+            //Events.Add("Strange Loop");
+            //Events.Add("Grace Hopper");
+            //Events.Add("Code with Pride");
+            ViewBag.events = events;
 
-            return View(events);
+            return View();
         }
 
         [HttpGet]
         public IActionResult Add()
         {
-            // Create a blank AddEventViewModel to associate with the form in Add.cshtml
-            AddEventViewModel addEventViewModel = new AddEventViewModel();
-            return View(addEventViewModel);
-        }
-
-        [HttpPost]
-        //[Route("/Events/Add")]
-        //public IActionResult NewEvent(string name, string desciption) 
-        public IActionResult Add(AddEventViewModel viewModel)
-        {
-            //Imagine doing lots of data validation on the viewModel first
-            if (ModelState.IsValid)
-            {
-                Event newEvent = new Event
-                {
-                    Name = viewModel.Name,
-                    Description = viewModel.Description,
-                    ContactEmail = viewModel.ContactEmail,
-                    Type = viewModel.Type
-                };
-
-                //EventData.Add(new Event(name, description));
-                EventData.Add(newEvent);
-
-                return Redirect("/Events");
-            }
-
-            // viewModel is NOT valid!
-            return View(viewModel);
-            
-        }
-
-        [HttpGet]
-        public IActionResult Delete()
-        {
-            ViewBag.events = EventData.GetAll();
-
             return View();
         }
 
         [HttpPost]
-        public IActionResult Delete(int[] eventIds)
+        [Route("/Events/Add")]
+        public IActionResult NewEvent(string name, string description)
         {
-            foreach(int eventId in eventIds)
-            {
-                EventData.Remove(eventId);
-            }
+            events.Add(name, description);
 
             return Redirect("/Events");
         }
+
+        [HttpGet]
+        [Route("/Events/Edit/{eventId}")]
+        public IActionResult Edit(int eventId)
+        {
+            //Create an editEventViewModel with properties assigned from Event associated with eventId
+            Event eventToEdit = EventData.GetById(eventId);
+
+            //Use eventToEdit to populate values of editEventViewModel
+            EditEventViewModel editEventViewModel = new EditEventViewModel(eventToEdit);
+            return View(editEventViewModel);
+        }
+
     }
 }
