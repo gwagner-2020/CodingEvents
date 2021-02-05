@@ -1,5 +1,6 @@
 ﻿using CodingEvents.Data;
 using CodingEvents.Models;
+using CodingEvents.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,5 +25,34 @@ namespace CodingEvents.Controllers
 
             return View(eventCategories);
         }
+
+       [HttpGet]
+       //[Route("/EventCategory/Create")]
+        public IActionResult Create()
+        {
+            AddEventCategoryViewModel addEventCategoryViewModel = new AddEventCategoryViewModel();
+            return View(addEventCategoryViewModel);
+        }
+
+        [HttpPost]
+        [Route("/EventCategory/Create")]
+        public IActionResult ProcessCreateEventCategoryForm(AddEventCategoryViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                EventCategory newEventCategory = new EventCategory
+                {
+                    Name = viewModel.Name
+                };
+                context.EventCategories.Add(newEventCategory);
+                context.SaveChanges();
+
+                return Redirect("/EventCategory");
+            }
+
+            return View(viewModel);
+        }
+
+
     }
 }

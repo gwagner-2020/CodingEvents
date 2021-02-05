@@ -1,0 +1,18 @@
+﻿@using CodingEvents.ViewModels;
+@model AddEventCategoryViewModel;
+@* Refer to AddEventViewModel object that was passed in as: Model *@
+
+<h1>Add Event Category</h1>
+
+<form method="post">
+    <div asp-controller="EventCategory" asp-action="Create" class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div>
+        <label>
+            <input type="submit" value="Add Event Category" />
+        </label>
+    </div>
+</form>
