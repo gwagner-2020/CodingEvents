@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CodingEvents.Models;
 using CodingEvents.Data;
 using CodingEvents.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodingEvents.Controllers
 {
@@ -24,7 +25,9 @@ namespace CodingEvents.Controllers
         public IActionResult Index()
         {
             //List<Event> events = new List<Event>(EventData.GetAll());
-            List<Event> events = context.Events.ToList();
+            List<Event> events = context.Events
+                .Include(e => e.Category)
+                .ToList();
 
             return View(events);
         }
@@ -32,8 +35,9 @@ namespace CodingEvents.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            List<EventCategory> categories = context.Categories.ToList();
             // Create a blank AddEventViewModel to associate with the form in Add.cshtml
-            AddEventViewModel addEventViewModel = new AddEventViewModel();
+            AddEventViewModel addEventViewModel = new AddEventViewModel(categories);
             return View(addEventViewModel);
         }
 
@@ -45,12 +49,16 @@ namespace CodingEvents.Controllers
             //Imagine doing lots of data validation on the viewModel first
             if (ModelState.IsValid)
             {
+                //Grab EventCategory object reference from DB associated with user's CategoryId choice
+                EventCategory category = context.Categories.Find(viewModel.CategoryId);
                 Event newEvent = new Event
                 {
                     Name = viewModel.Name,
                     Description = viewModel.Description,
                     ContactEmail = viewModel.ContactEmail,
-                    Type = viewModel.Type
+                    //Type = viewModel.Type
+                    //CategoryId = viewModel.CategoryId,
+                    Category = category
                 };
 
                 //EventData.Add(new Event(name, description));

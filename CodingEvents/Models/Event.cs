@@ -13,7 +13,12 @@ namespace CodingEvents.Models
         [FromForm(Name="desc")]
         public string Description { get; set; }
         public string ContactEmail { get; set; }
-        public EventType Type { get; set; }
+        //public EventType Type { get; set; }
+
+        //CategoryId is a foreign id and following line provides reference to EventCategory object
+        public int CategoryId { get; set; }
+        public EventCategory Category { get; set; }
+
 
         public int Id { get; set; }
         private static int nextId = 1;

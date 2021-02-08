@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodingEvents.Migrations
 {
     [DbContext(typeof(EventDbContext))]
-    [Migration("20210204180648_InitialMigration")]
+    [Migration("20210208214901_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,9 @@ namespace CodingEvents.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ContactEmail")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -33,12 +36,34 @@ namespace CodingEvents.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("Type")
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("CodingEvents.Models.EventCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Events");
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("CodingEvents.Models.Event", b =>
+                {
+                    b.HasOne("CodingEvents.Models.EventCategory", "Category")
+                        .WithMany("Events")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
