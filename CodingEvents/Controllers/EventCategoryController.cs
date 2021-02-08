@@ -17,7 +17,7 @@ namespace CodingEvents.Controllers
             this.context = context;
         }
         
-        // GET: /<controller>/
+        // GET: /EventCategory
         [HttpGet]
         public IActionResult Index()
         {
