@@ -11,5 +11,8 @@ namespace CodingEvents.ViewModels
         [Required (ErrorMessage = "Event category is required.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be between 3 and 50 characters.")]
         public string Name { get; set; }
+
+        // default constructor; can be deleted as well
+        public AddEventCategoryViewModel() { }
     }
 }

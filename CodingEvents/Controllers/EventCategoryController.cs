@@ -50,7 +50,7 @@ namespace CodingEvents.Controllers
                 return Redirect("/EventCategory");
             }
 
-            return View(viewModel);
+            return View("Create", viewModel);
         }
 
 
