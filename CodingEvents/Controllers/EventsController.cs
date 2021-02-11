@@ -96,5 +96,22 @@ namespace CodingEvents.Controllers
             context.SaveChanges();
             return Redirect("/Events");
         }
+
+        //Events/Detail?id=5
+        //Events/Detail/5
+        public IActionResult Detail(int id)
+        {
+            Event evt = context.Events
+                .Include(e => e.Category)
+                .Single(e => e.Id == id);
+
+            List<EventTag> eventTags = context.EventTags
+                .Where(et => et.EventId == id)
+                .Include(et => et.Tag)
+                .ToList();
+
+            EventDetailViewModel viewModel = new EventDetailViewModel(evt, eventTags);
+            return View(viewModel);
+        }
     }
 }
