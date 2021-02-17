@@ -10,13 +10,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CodingEvents.Controllers
 {
+    //[Authorize]
     public class EventsController : Controller
     {
         //private static List<Event> events = new List<Event>();
         private EventDbContext context;
+        //private IAuthorizationService authorizationService;
+        //private UserManager<IdentityUser> userManager;
+
+        //public EventsControler(EventDbContext context, IAuthorizationService authorizationService UserManager<IdendityUser> userManagner) : base()
         public EventsController(EventDbContext context)
         {
             this.context = context;
+            //this.authorizationService = authorizationService;
+            //this.userManager = userManger;
         }
 
 
@@ -24,9 +31,12 @@ namespace CodingEvents.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            //var CurrentUserId = userManagner.GetUserId(User);
+            
             //List<Event> events = new List<Event>(EventData.GetAll());
             List<Event> events = context.Events
                 .Include(e => e.Category)
+                //.Where(e => e.UserId == currentUserId)
                 .ToList();
 
             return View(events);
@@ -49,6 +59,8 @@ namespace CodingEvents.Controllers
             //Imagine doing lots of data validation on the viewModel first
             if (ModelState.IsValid)
             {
+                //var currentUserId = userManager.GetUserId(User);
+                
                 //Grab EventCategory object reference from DB associated with user's CategoryId choice
                 EventCategory category = context.Categories.Find(viewModel.CategoryId);
                 Event newEvent = new Event
@@ -59,6 +71,7 @@ namespace CodingEvents.Controllers
                     //Type = viewModel.Type
                     //CategoryId = viewModel.CategoryId,
                     Category = category
+                    //UserId = currentUserId
                 };
 
                 //EventData.Add(new Event(name, description));

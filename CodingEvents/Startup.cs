@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CodingEvents.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace CodingEvents
 {
@@ -28,6 +29,12 @@ namespace CodingEvents
 
             services.AddDbContext<EventDbContext>(options =>
             options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+
+            //following code in this method added for authentication
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<EventDbContext>();
+
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +52,8 @@ namespace CodingEvents
 
             app.UseRouting();
 
+            //next line added for authentication
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -52,6 +61,9 @@ namespace CodingEvents
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                //next line added for authentication
+                endpoints.MapRazorPages();
             });
         }
     }

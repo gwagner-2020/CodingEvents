@@ -23,6 +23,8 @@ namespace CodingEvents.Models
         public int Id { get; set; }
         private static int nextId = 1;
 
+        //public string UserId {get; set}
+
         // code removed to prepare for migration
         public Event()
         {
