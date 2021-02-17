@@ -7,23 +7,25 @@ using CodingEvents.Models;
 using CodingEvents.Data;
 using CodingEvents.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CodingEvents.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class EventsController : Controller
     {
         //private static List<Event> events = new List<Event>();
         private EventDbContext context;
-        //private IAuthorizationService authorizationService;
-        //private UserManager<IdentityUser> userManager;
+        
+        private IAuthorizationService authorizationService;
+        private UserManager<IdentityUser> userManager;
 
-        //public EventsControler(EventDbContext context, IAuthorizationService authorizationService UserManager<IdendityUser> userManagner) : base()
-        public EventsController(EventDbContext context)
+        public EventsController(EventDbContext context, IAuthorizationService authorizationService, UserManager<IdentityUser> userManager) : base()
         {
             this.context = context;
-            //this.authorizationService = authorizationService;
-            //this.userManager = userManger;
+            this.authorizationService = authorizationService;
+            this.userManager = userManager;
         }
 
 
@@ -31,12 +33,12 @@ namespace CodingEvents.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            //var CurrentUserId = userManagner.GetUserId(User);
+            var currentUserId = userManager.GetUserId(User);
             
             //List<Event> events = new List<Event>(EventData.GetAll());
             List<Event> events = context.Events
                 .Include(e => e.Category)
-                //.Where(e => e.UserId == currentUserId)
+                .Where(e => e.UserId == currentUserId)
                 .ToList();
 
             return View(events);
@@ -59,7 +61,7 @@ namespace CodingEvents.Controllers
             //Imagine doing lots of data validation on the viewModel first
             if (ModelState.IsValid)
             {
-                //var currentUserId = userManager.GetUserId(User);
+                var currentUserId = userManager.GetUserId(User);
                 
                 //Grab EventCategory object reference from DB associated with user's CategoryId choice
                 EventCategory category = context.Categories.Find(viewModel.CategoryId);
@@ -70,8 +72,8 @@ namespace CodingEvents.Controllers
                     ContactEmail = viewModel.ContactEmail,
                     //Type = viewModel.Type
                     //CategoryId = viewModel.CategoryId,
-                    Category = category
-                    //UserId = currentUserId
+                    Category = category,
+                    UserId = currentUserId
                 };
 
                 //EventData.Add(new Event(name, description));
